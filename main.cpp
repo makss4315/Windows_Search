@@ -3,25 +3,56 @@
 #include <string>
 
 namespace fs = std::filesystem;
-
-int main() {
-    fs::path temp = "D:/TEST";
-
-    for (auto& entry : fs::recursive_directory_iterator(temp))
+ bool isSystemPath(const fs::path& path)
     {
-        std::cout<<entry.path().string()<<" ";
+    std::string SystemFileName = path.filename().string();
+        return SystemFileName == "Recovery"||
+               SystemFileName [0] == '$';
 
-        if (entry.is_regular_file())
+    }
+int main() {
+    fs::path temp = "D:/";
+
+    auto options = fs::directory_options::skip_permission_denied;
+
+    std::error_code ErrorCode;
+
+     auto FileIterator = fs::recursive_directory_iterator(temp,options, ErrorCode);
+
+    while (FileIterator != fs::recursive_directory_iterator())
+    {
+
+
+        if (isSystemPath(FileIterator->path()))
         {
-            std::cout<<"[file]"
-                                <<entry.file_size() << "[baits]";
+            FileIterator.disable_recursion_pending();
+            std::cout<<"[system file: skip]"<<FileIterator->path().string()<<"\n";
+
+        }
+
+        if (FileIterator->is_regular_file())
+        {
+            std::cout<<"[file] "
+                                <<FileIterator->path().string()<<"\t"
+                                <<FileIterator->file_size() << "[bytes]";
 
 
-        } else if (entry.is_directory())
+
+        } else if (FileIterator->is_directory())
         {
             std::cout<<"[directory]";
         }
             std::cout<<"\n";
+
+          FileIterator.increment(ErrorCode);
+
+            if (ErrorCode)
+            {
+                std::cout<<"[error: skip ]" << FileIterator->path().string() <<"\n";
+                ErrorCode.clear();
+
+            }
+
     }
 
 
