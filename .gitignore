@@ -1,0 +1,8 @@
+cmake-build-debug
+cmake-build-release
+cmake-buid-*/
+
+.idea
+
+*.exe
+*.lib
