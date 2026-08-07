@@ -5,6 +5,12 @@
 #include <filesystem>
 #include <string>
 #include <map>
+#include <vector>
+#include <cstdlib>
+
+
+int TargetCount;
+std::vector<std::string> resultTargetList;
 
 bool isSystemPath(const fs::path& path)
 {
@@ -14,22 +20,21 @@ bool isSystemPath(const fs::path& path)
 
 }
 
-void FindTarget(const fs::path& path, const std::string& target)
+bool FindTarget(const fs::path& path, const std::string& target)
 {
-    std::string FileName = filename().string();
-    if (target == F)
-
-
-
+    std::string FileName = path.filename().string();
+    if (target == FileName)
+    {
+        TargetCount++;
+        resultTargetList.push_back(FileName);
+        return true;
+    }
+    return false;
 }
 
-void Show TargetList(const fs::path& path)
-{
-    map<int, std::string> TargetList;
 
-}
 
-void DirectoryIteration(const fs::path& path)
+void DirectoryIteration(const fs::path& path, const std::string& target)
 {
     auto options = fs::directory_options::skip_permission_denied;
 
@@ -62,6 +67,12 @@ void DirectoryIteration(const fs::path& path)
         }
         std::cout<<"\n";
 
+        if (FindTarget(FileIterator->path() ,target))
+        {
+            std::cout<<"[target find]"<<FileIterator->path().string()<<"\n";
+           system("pause");
+        }
+
         FileIterator.increment(ErrorCode);
 
         if (ErrorCode)
@@ -70,6 +81,8 @@ void DirectoryIteration(const fs::path& path)
             ErrorCode.clear();
 
         }
+
+
 
     }
 }

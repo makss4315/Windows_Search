@@ -10,9 +10,10 @@ std::string target;
 
 int main() {
     fs::path const Dir = "D:/";
+    std::cout << "Pls enter the target: ";
     std::cin>>target;
 
-    DirectoryIteration(Dir);
+    DirectoryIteration(Dir, target);
     return 0;
 }
 

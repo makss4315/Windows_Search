@@ -7,8 +7,8 @@ namespace fs = std::filesystem;
 
 bool isSystemPath(const fs::path& path);
 
-void DirectoryIteration(const fs::path& path);
+void DirectoryIteration(const fs::path& path, const std::string& target);
 
-void FindTarget(const fs::path& path);
+bool FindTarget(const fs::path& path, const std::string& target);
 
 void ShowTargetList(const fs::path& path);
