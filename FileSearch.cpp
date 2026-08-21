@@ -4,13 +4,37 @@
 #include "FileSearch.h"
 #include <filesystem>
 #include <string>
-#include <map>
+
 #include <vector>
-#include <cstdlib>
+
+#include <fstream>
 
 
 int TargetCount;
 std::vector<std::string> resultTargetList;
+
+void AddToIndexPoolPath(const fs::path& path, std::vector<std::string>& Paths)
+{
+    Paths.push_back(path.string());
+}
+
+void SaveToIndexPool(const fs::path& path, std::vector<std::string>& Paths)
+{
+    std::ofstream IndexPool;
+    IndexPool.open("indexPool.txt", std::ios::app);
+    if (!IndexPool.is_open())
+    {
+        std::cout<<"Can't open [IndexPool.txt]"<<std::endl;
+
+    }
+
+    for(const auto& a: Paths)
+    {
+        IndexPool << a <<'\n';
+    }
+
+}
+
 
 bool isSystemPath(const fs::path& path)
 {
@@ -36,6 +60,7 @@ bool FindTarget(const fs::path& path, const std::string& target)
 
 void DirectoryIteration(const fs::path& path, const std::string& target)
 {
+    std::vector<std::string> Paths;
     auto options = fs::directory_options::skip_permission_denied;
 
     std::error_code ErrorCode;
@@ -58,6 +83,7 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
             std::cout<<"[file] "
                                 <<FileIterator->path().string()<<"\t"
                                 <<FileIterator->file_size() << "[bytes]";
+            AddToIndexPoolPath(FileIterator->path(), Paths);
 
 
 
@@ -72,7 +98,7 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
             std::cout<<"[target find]"<<FileIterator->path().string()<<"\n";
            system("pause");
         }
-
+    SaveToIndexPool(FileIterator->path(),Paths );
         FileIterator.increment(ErrorCode);
 
         if (ErrorCode)
