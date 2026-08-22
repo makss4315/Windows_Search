@@ -18,10 +18,10 @@ void AddToIndexPoolPath(const fs::path& path, std::vector<std::string>& Paths)
     Paths.push_back(path.string());
 }
 
-void SaveToIndexPool(const fs::path& path, std::vector<std::string>& Paths)
+void SaveToIndexPool(std::vector<std::string>& Paths)
 {
     std::ofstream IndexPool;
-    IndexPool.open("indexPool.txt", std::ios::app);
+    IndexPool.open("indexPool.txt");
     if (!IndexPool.is_open())
     {
         std::cout<<"Can't open [IndexPool.txt]"<<std::endl;
@@ -96,9 +96,11 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
         if (FindTarget(FileIterator->path() ,target))
         {
             std::cout<<"[target find]"<<FileIterator->path().string()<<"\n";
+            SaveToIndexPool(Paths);
            system("pause");
+
         }
-    SaveToIndexPool(FileIterator->path(),Paths );
+
         FileIterator.increment(ErrorCode);
 
         if (ErrorCode)
