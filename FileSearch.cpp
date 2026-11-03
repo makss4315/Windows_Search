@@ -12,6 +12,29 @@
 
 int TargetCount;
 std::vector<std::string> resultTargetList;
+std::vector<std::string> LoadFromIndexPoolVector;
+
+void LoadFromIndexPool()
+{
+    std::ifstream IndexPool("indexPool.txt");
+    std::string line;
+    if (IndexPool.is_open())
+    {
+        LoadFromIndexPoolVector.clear();
+        while (std::getline(IndexPool, line))
+        {
+            std::cout<<line<<"\n";
+            LoadFromIndexPoolVector.push_back(line);
+
+        }
+       
+    } else
+    {
+        std::cerr <<"Cant open [IndexPool.txt]"<<"\n" ;
+    }
+
+
+}
 
 void AddToIndexPoolPath(const fs::path& path, std::vector<std::string>& Paths)
 {
@@ -70,7 +93,6 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
     while (FileIterator != fs::recursive_directory_iterator())
     {
 
-
         if (isSystemPath(FileIterator->path()))
         {
             FileIterator.disable_recursion_pending();
@@ -96,8 +118,7 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
         if (FindTarget(FileIterator->path() ,target))
         {
             std::cout<<"[target find]"<<FileIterator->path().string()<<"\n";
-            SaveToIndexPool(Paths);
-           system("pause");
+          system("pause");
 
         }
 
@@ -105,7 +126,7 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
 
         if (ErrorCode)
         {
-            std::cout<<"[error: skip ]" << FileIterator->path().string() <<"\n";
+            std::cout<<"[error: skip ]" << ErrorCode.message() <<"\n";
             ErrorCode.clear();
 
         }
@@ -113,4 +134,6 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
 
 
     }
+
+SaveToIndexPool(Paths);
 }
