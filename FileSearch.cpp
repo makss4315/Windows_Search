@@ -89,6 +89,14 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
     std::error_code ErrorCode;
 
     auto FileIterator = fs::recursive_directory_iterator(path,options, ErrorCode);
+     if (ErrorCode)
+    {
+       std::cerr<<"[error:]"
+         << ErrorCode.message() <<"\n";
+
+         return;
+
+    }
 
     while (FileIterator != fs::recursive_directory_iterator())
     {
@@ -124,12 +132,7 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
 
         FileIterator.increment(ErrorCode);
 
-        if (ErrorCode)
-        {
-            std::cout<<"[error: skip ]" << ErrorCode.message() <<"\n";
-            ErrorCode.clear();
 
-        }
 
 
 
