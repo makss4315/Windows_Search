@@ -23,7 +23,9 @@ void LoadFromIndexPool()
         LoadFromIndexPoolVector.clear();
         while (std::getline(IndexPool, line))
         {
-            std::cout<<line<<"\n";
+            fs::path savedPath(line);
+            std::string FileName = savedPath.filename().string();
+            std::cout<<FileName<<"\n";
             LoadFromIndexPoolVector.push_back(line);
 
         }
@@ -48,7 +50,7 @@ void SaveToIndexPool(std::vector<std::string>& Paths)
     if (!IndexPool.is_open())
     {
         std::cout<<"Can't open [IndexPool.txt]"<<std::endl;
-
+        return;
     }
 
     for(const auto& a: Paths)
@@ -132,7 +134,12 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
 
         FileIterator.increment(ErrorCode);
 
-
+        if (ErrorCode)
+        {
+        std::cerr<<"[error:]"
+                              <<ErrorCode.message() <<"\n";
+        return;
+        }
 
 
 
