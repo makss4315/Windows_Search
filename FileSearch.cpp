@@ -14,7 +14,7 @@ int TargetCount;
 std::vector<std::string> resultTargetList;
 std::vector<std::string> LoadFromIndexPoolVector;
 
-void LoadFromIndexPool()
+void LoadFromIndexPool(const std::string& target)
 {
     std::ifstream IndexPool("indexPool.txt");
     std::string line;
@@ -25,7 +25,12 @@ void LoadFromIndexPool()
         {
             fs::path savedPath(line);
             std::string FileName = savedPath.filename().string();
-            std::cout<<FileName<<"\n";
+            if (FileName == target)
+            {
+                std::cout<<"your target"
+                                        <<"[path]"<<line<<"\n";
+            }
+
             LoadFromIndexPoolVector.push_back(line);
 
         }

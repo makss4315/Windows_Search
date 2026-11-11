@@ -19,6 +19,8 @@ int main() {
     std::cout << "Pls enter the target: ";
     std::cin>>target;
 
+     LoadFromIndexPool(target);
+    
 auto start = std::chrono::steady_clock::now();
     DirectoryIteration(Dir, target);
 

@@ -12,3 +12,5 @@ void DirectoryIteration(const fs::path& path, const std::string& target);
 bool FindTarget(const fs::path& path, const std::string& target);
 
 void ShowTargetList(const fs::path& path);
+
+void LoadFromIndexPool(const std::string& target);
