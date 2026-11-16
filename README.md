@@ -83,3 +83,7 @@ Windows_Search/
 ├── FileSearch.h                 # Search function declarations
 ├── FileSearch.cpp               # Drive traversal and index handling
 ```
+
+Copyright (C) 2026 Maksym Shevchenko.
+
+This project is licensed under the GNU General Public License v3.0.
