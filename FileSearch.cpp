@@ -1,4 +1,6 @@
 
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Maksym Shevchenko
 
 #include <iostream>
 #include "FileSearch.h"
@@ -94,6 +96,11 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
     auto options = fs::directory_options::skip_permission_denied;
 
     std::error_code ErrorCode;
+
+    std::ofstream IndexPoolTemp;
+    IndexPoolTemp.open("indexPool.tmp");
+    if (!IndexPoolTemp.is_open()) return;
+
 
     auto FileIterator = fs::recursive_directory_iterator(path,options, ErrorCode);
      if (ErrorCode)
