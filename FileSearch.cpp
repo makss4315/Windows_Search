@@ -99,7 +99,9 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
 
     std::ofstream IndexPoolTemp;
     IndexPoolTemp.open("indexPool.tmp");
-    if (!IndexPoolTemp.is_open()) return;
+
+    if (!IndexPoolTemp.is_open())
+    {std::cout<<"[error]Cant open IndexPool.tmp"; return;}
 
 
     auto FileIterator = fs::recursive_directory_iterator(path,options, ErrorCode);
@@ -128,6 +130,11 @@ void DirectoryIteration(const fs::path& path, const std::string& target)
                                 <<FileIterator->path().string()<<"\t"
                                 <<FileIterator->file_size() << "[bytes]";
             AddToIndexPoolPath(FileIterator->path(), Paths);
+            IndexPoolTemp<<FileIterator->path().string()<<"\n";
+            if (!IndexPoolTemp)
+            {
+                std::cout<<"[error:] Can't write to indexPool.tmp"; return;
+            }
 
 
 
